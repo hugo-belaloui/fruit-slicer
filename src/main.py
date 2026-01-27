@@ -5,10 +5,12 @@ screen, clock = window.init_screen() #call function from diffrent module to init
 game_on = True 
 
 while game_on: # while game_on is true as set previously the game is running
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT: # handle window closing
             game_on = False
-
+        if event.type == pygame.KEYDOWN: # input handling
+            print(pygame.key.name(event.key))
     screen.fill((30, 144, 255)) # fill the screen with a color as RGB
     pygame.display.flip() # update the screen
     clock.tick(60) # avoid overloading the CPU by capping the game at 60 FPS
