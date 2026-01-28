@@ -4,7 +4,7 @@ import time
 
 
 FRUITS_NAMES = ["apple", "mango", "kiwi", "bomb", "ice"]
-SCALE = 0.5
+SCALE = 0.3
 
 def load_fruits():
     fruits = []
@@ -19,8 +19,10 @@ def load_fruits():
 
 
 fruits = load_fruits()
+spawn_x = random.randint(0 , 800)
+spawn_y = 400
 
 fruit = random.choice(fruits)
 
 def draw_fruit(screen):
-        screen.blit(fruit, (00, 150))
+        screen.blit(fruit, (spawn_x, spawn_y))
