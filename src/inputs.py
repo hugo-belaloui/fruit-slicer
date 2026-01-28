@@ -1,4 +1,8 @@
 import pygame
+pygame.display.init() # init only the required module from pygame for mouse handling
+def mouse_position():
+    mouse_position = pygame.mouse.get_pos()
+    return mouse_position   
 
 def keyboard_inputs():
     """
