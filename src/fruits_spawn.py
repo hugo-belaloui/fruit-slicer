@@ -12,7 +12,7 @@ def load_fruits():
     fruits = []
 
     for name in FRUITS_NAMES:
-        img = pygame.image.load(f"fruit-slicer/assets/{name}.png")
+        img = pygame.image.load(f"assets/{name}.png")
         w, h = img.get_width(), img.get_height()
         img = pygame.transform.scale(img, (int(w * SCALE), int(h * SCALE)))
         fruits.append(img)
@@ -41,7 +41,6 @@ class Fruit:
         screen.blit(self.image, (self.x, self.y))
 
 fruits = []
-last_spawn = pygame.time.get_ticks()
 # print(last_spawn)
 def spawn(last_spawn):
     current_time = pygame.time.get_ticks()
