@@ -3,17 +3,20 @@ import window
 import game_states
 import menu
 import inputs
+import fruits_spawn
 
 screen, clock = window.init_screen() #call function from diffrent module to initialize screen
 game_on = True 
 
 current_state = game_states.STATE_MENU
+last_spawn = pygame.time.get_ticks()
 
 while game_on: # while game_on is true as set previously the game is running
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT: # handle window closing
             game_on = False
+
         if event.type == pygame.KEYDOWN: # input handling
             print(pygame.key.name(event.key)) # for debugging purpose
             if current_state == game_states.STATE_MENU: # check current state
@@ -34,6 +37,11 @@ while game_on: # while game_on is true as set previously the game is running
         menu.draw(screen)
     elif current_state == game_states.STATE_GAME:
         screen.fill((30, 144, 255)) # fill the screen with a color as RGB
+        last_spawn = fruits_spawn.spawn(last_spawn)
+        fruits_spawn.update_draw(screen)
+
+
+
     pygame.display.flip() # update the screen
     clock.tick(60) # avoid overloading the CPU by capping the game at 60 FPS
 
