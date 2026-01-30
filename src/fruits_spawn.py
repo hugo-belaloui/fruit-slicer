@@ -31,8 +31,9 @@ fruits_images = load_fruits()
 
 
 class Fruit:
-    def __init__(self, image):
+    def __init__(self, image, name):
         self.image = image
+        self.name = name
         self.x = random.randint(0, window.WIDTH) 
         self.y = window.HEIGHT 
         if self.x < window.WIDTH // 2:
@@ -59,14 +60,20 @@ class FruitSpawner:
         self.last_wave_time = 0
         self.current_wave_fruits = 0
         self.fruits_per_wave = random.randint(3, 5)
+        self.freeze_end_time = 0 #variable that time of end freeze
+
     def check_input(self, user_input):
         
         for fruit in self.fruits:
             # we compare letter with user input
             if user_input.upper() == fruit.letter.upper():
                 self.fruits.remove(fruit) # we remove the fruit, should be animated later on
-                return True 
-        return False
+                return fruit.name 
+        return None
+    
+    def activate_freeze(self, duration):
+        self.freeze_end_time = pygame.time.get_ticks() + duration
+
     def probability(self):
         probability = random.randint(0, 100)
         if probability in range(0, 88):
@@ -79,6 +86,10 @@ class FruitSpawner:
     def update(self):
         current_time = pygame.time.get_ticks()
 
+        if current_time < self.freeze_end_time : #if frozen don't add fruits
+            self.last_spawn = current_time 
+            return
+        
         if self.current_wave_fruits == 0:                             # number of fruit in the current wave
             if current_time - self.last_wave_time < WAVE_DELAY:       # waits until the delay of the wave becomes 0
                 return
@@ -86,7 +97,7 @@ class FruitSpawner:
         if current_time - self.last_spawn > SPAWN_DELAY:              # look if the delay has passed
             fruit_name = self.probability()
             fruit_image = fruits_images[ASSETS.index(fruit_name)]
-            fruit = Fruit(fruit_image)               # choose a random fruit 
+            fruit = Fruit(fruit_image, fruit_name)               # choose a random fruit 
             self.fruits.append(fruit)                                 # add the chosen fruit to the list
             self.last_spawn = current_time                            # update the the time of last spawn 
             self.current_wave_fruits += 1                             # add +1 to the number of fruits in the wave
@@ -97,6 +108,9 @@ class FruitSpawner:
                 self.fruits_per_wave = random.randint(3, 5)           # add a fruit between 3 and 5
 
     def update_draw(self, screen):
+        current_time = pygame.time.get_ticks()
+        is_frozen = current_time < self.freeze_end_time #check if time is frozen
         for fruit in self.fruits[:]:
-            fruit.update()
+            if not is_frozen: # if time isn't frozen we move the assets
+                fruit.update()
             fruit.draw(screen)

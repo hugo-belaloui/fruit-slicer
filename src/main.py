@@ -5,6 +5,7 @@ import menu
 import inputs
 import fruits_spawn
 import score
+import random
 
 screen, clock = window.init_screen() #call function from diffrent module to initialize screen
 game_on = True 
@@ -28,7 +29,13 @@ while game_on: # while game_on is true as set previously the game is running
                 if event.key == pygame.K_ESCAPE:
                     current_state = game_states.STATE_MENU
                 else:
-                    if spawner.check_input(pygame.key.name(event.key)):
+                    hit_fruit = spawner.check_input(pygame.key.name(event.key))
+                    if hit_fruit == "bomb":
+                        current_state = game_states.STATE_MENU # if we hit the bomb we go back to the menu for now 
+                        spawner.fruits = [] #reset the lists of fruits
+                    elif hit_fruit == "ice":
+                        spawner.activate_freeze(random.randint(3000,5000)) #we add random duration time to the freeze
+                    elif hit_fruit: # if we hit a fruit score increases 
                         scoring = score.load_scores()
                         scoring["scores"]["players"]["jhon doe"] += 1
                         score.add_scores(scoring)
