@@ -4,6 +4,7 @@ import game_states
 import menu
 import inputs
 import fruits_spawn
+import score
 
 screen, clock = window.init_screen() #call function from diffrent module to initialize screen
 game_on = True 
@@ -27,7 +28,10 @@ while game_on: # while game_on is true as set previously the game is running
                 if event.key == pygame.K_ESCAPE:
                     current_state = game_states.STATE_MENU
                 else:
-                    spawner.check_input(pygame.key.name(event.key))
+                    if spawner.check_input(pygame.key.name(event.key)):
+                        scoring = score.load_scores()
+                        scoring["scores"]["players"]["jhon doe"] += 1
+                        score.add_scores(scoring)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 if menu.play_button.rect.collidepoint(inputs.mouse_position()):
