@@ -39,6 +39,7 @@ while game_on: # while game_on is true as set previously the game is running
         screen.fill((30, 144, 255)) # fill the screen with a color as RGB
         last_spawn = fruits_spawn.spawn(last_spawn)
         fruits_spawn.update_draw(screen)
+        print([f.letter for f in fruits_spawn.fruits]) # for debug purpose
 
 
 

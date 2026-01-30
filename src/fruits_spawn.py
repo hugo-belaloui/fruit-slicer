@@ -1,12 +1,11 @@
 import pygame
 import random
-import time
-
+import string
 
 FRUITS_NAMES = ["apple", "mango", "kiwi", "bomb", "ice"]
 SCALE = 0.3
 GRAVITY = 0.5
-SPAWN_DELAY = 500 #ms
+SPAWN_DELAY = 1000 #ms
 
 def load_fruits():
     fruits = []
@@ -30,15 +29,17 @@ class Fruit:
             self.vx = random.uniform(3, 6) #uniform for floating numbers
         else:
             self.vx = random.uniform(-6, -3)
-
         self.vy = random.uniform(-22, -18)
-
+        self.letter = random.choice(string.ascii_uppercase) # choose an uppercase letter randomly
+        self.letter_font = pygame.font.Font(None, 50) # font for the letters
+        self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
     def update(self) :
         self.x += self.vx
         self.y += self.vy
         self.vy += GRAVITY
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.letter_text, (self.x - 10, self.y - 10))
 
 fruits = []
 # print(last_spawn)
