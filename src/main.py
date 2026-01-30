@@ -26,6 +26,8 @@ while game_on: # while game_on is true as set previously the game is running
             elif current_state == game_states.STATE_GAME:
                 if event.key == pygame.K_ESCAPE:
                     current_state = game_states.STATE_MENU
+                else:
+                    spawner.check_input(pygame.key.name(event.key))
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 if menu.play_button.rect.collidepoint(inputs.mouse_position()):

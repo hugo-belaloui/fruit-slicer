@@ -55,7 +55,14 @@ class FruitSpawner:
         self.last_wave_time = 0
         self.current_wave_fruits = 0
         self.fruits_per_wave = random.randint(3, 5)
-
+    def check_input(self, user_input):
+        
+        for fruit in self.fruits:
+            # we compare letter with user input
+            if user_input.upper() == fruit.letter.upper():
+                self.fruits.remove(fruit) # we remove the fruit, should be animated later on
+                return True 
+        return False
     def update(self):
         current_time = pygame.time.get_ticks()
 
