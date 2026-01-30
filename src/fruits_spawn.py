@@ -1,12 +1,18 @@
 import pygame
 import random
-import time
+import window
+import string
 
 
-FRUITS_NAMES = ["apple", "mango", "kiwi", "bomb", "ice"]
+FRUITS_NAMES = ["apple", "apple", "apple",
+    "mango", "mango", "mango",
+    "kiwi", "kiwi",
+    "bomb",
+    "ice"]
 SCALE = 0.3
-GRAVITY = 0.5
-SPAWN_DELAY = 500 #ms
+GRAVITY = 0.4
+SPAWN_DELAY = random.randint(300 , 800)  #ms
+WAVE_DELAY = 2000 #ms
 
 def load_fruits():
     fruits = []
@@ -24,43 +30,52 @@ fruits_images = load_fruits()
 class Fruit:
     def __init__(self, image):
         self.image = image
-        self.x = random.randint(0, 800) 
-        self.y = 400
-        if self.x < 800 // 2:
+        self.x = random.randint(0, window.WIDTH) 
+        self.y = window.HEIGHT 
+        if self.x < window.WIDTH // 2:
             self.vx = random.uniform(3, 6) #uniform for floating numbers
         else:
             self.vx = random.uniform(-6, -3)
-
         self.vy = random.uniform(-22, -18)
-
+        self.letter = random.choice(string.ascii_uppercase) # choose an uppercase letter randomly
+        self.letter_font = pygame.font.Font(None, 50) # font for the letters
+        self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
     def update(self) :
         self.x += self.vx
         self.y += self.vy
         self.vy += GRAVITY
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.letter_text, (self.x - 10, self.y - 10))
 
-fruits = []
-# print(last_spawn)
-def spawn(last_spawn):
-    current_time = pygame.time.get_ticks()
-    if current_time - last_spawn > SPAWN_DELAY:
-        fruit = Fruit(random.choice(fruits_images))
-        fruits.append(fruit)
-        last_spawn = current_time
-        return current_time
-    return last_spawn
+class FruitSpawner:
+    def __init__(self):
+        self.fruits = []
+        self.last_spawn = 0
+        self.last_wave_time = 0
+        self.current_wave_fruits = 0
+        self.fruits_per_wave = random.randint(3, 5)
 
-def update_draw(screen):
-    for fruit in fruits[:]:
-        fruit.update()
-        fruit.draw(screen)
+    def update(self):
+        current_time = pygame.time.get_ticks()
 
+        if self.current_wave_fruits == 0:
+            if current_time - self.last_wave_time < WAVE_DELAY:
+                return
 
-# spawn_x = random.randint(0 , 800)
-# spawn_y = 400
+        if current_time - self.last_spawn > SPAWN_DELAY:
+            fruit = Fruit(random.choice(fruits_images))
+            self.fruits.append(fruit)
+            self.last_spawn = current_time
+            self.current_wave_fruits += 1
 
-# fruit = random.choice(fruits)
+            if self.current_wave_fruits >= self.fruits_per_wave:
+                self.current_wave_fruits = 0
+                self.last_wave_time = current_time
+                self.fruits_per_wave = random.randint(3, 5)
 
-# def draw_fruit(screen):
-#         screen.blit(fruit, (spawn_x, spawn_y))
+    def update_draw(self, screen):
+        for fruit in self.fruits[:]:
+            fruit.update()
+            fruit.draw(screen)
+

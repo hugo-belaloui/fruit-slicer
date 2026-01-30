@@ -1,5 +1,6 @@
 import pygame
 import inputs
+import window
 
 pygame.font.init() # init only the required module from pygame for mouse handling
 
@@ -36,8 +37,8 @@ class Button:
         screen.blit(self.text_surface, self.text_rect)
 
 # constants for alignment 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 400
+SCREEN_WIDTH = window.WIDTH
+SCREEN_HEIGHT = window.HEIGHT
 BUTTON_WIDTH = 200
 BUTTON_HEIGHT = 80
 GAP = 20

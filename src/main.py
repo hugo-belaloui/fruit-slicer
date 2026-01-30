@@ -9,7 +9,8 @@ screen, clock = window.init_screen() #call function from diffrent module to init
 game_on = True 
 
 current_state = game_states.STATE_MENU
-last_spawn = pygame.time.get_ticks()
+spawner = fruits_spawn.FruitSpawner()
+
 
 while game_on: # while game_on is true as set previously the game is running
 
@@ -37,8 +38,9 @@ while game_on: # while game_on is true as set previously the game is running
         menu.draw(screen)
     elif current_state == game_states.STATE_GAME:
         screen.fill((30, 144, 255)) # fill the screen with a color as RGB
-        last_spawn = fruits_spawn.spawn(last_spawn)
-        fruits_spawn.update_draw(screen)
+        spawner.update()
+        spawner.update_draw(screen)
+        print([fruit.letter for fruit in spawner.fruits])
 
 
 
