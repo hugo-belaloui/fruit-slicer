@@ -1,6 +1,7 @@
 import pygame
 import random
 import window
+import string
 
 
 ASSETS = ["apple", "mango", "kiwi", "bomb", "ice"]
@@ -32,22 +33,23 @@ fruits_images = load_fruits()
 class Fruit:
     def __init__(self, image):
         self.image = image
-        self.x = random.randint(0, window.WIDTH)
-        self.y = window.HEIGHT
+        self.x = random.randint(0, window.WIDTH) 
+        self.y = window.HEIGHT 
         if self.x < window.WIDTH // 2:
-            self.vx = random.uniform(3, 6)  #uniform for floating numbers
+            self.vx = random.uniform(3, 6) #uniform for floating numbers
         else:
             self.vx = random.uniform(-6, -3)
-
         self.vy = random.uniform(-22, -18)
-
-    def update(self):
+        self.letter = random.choice(string.ascii_uppercase) # choose an uppercase letter randomly
+        self.letter_font = pygame.font.Font(None, 50) # font for the letters
+        self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
+    def update(self) :
         self.x += self.vx
         self.y += self.vy
         self.vy += GRAVITY
-
     def draw(self, screen):
         screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.letter_text, (self.x - 10, self.y - 10))
 
 
 class FruitSpawner:

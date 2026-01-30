@@ -40,6 +40,7 @@ while game_on: # while game_on is true as set previously the game is running
         screen.fill((30, 144, 255)) # fill the screen with a color as RGB
         spawner.update()
         spawner.update_draw(screen)
+        print([fruit.letter for fruit in spawner.fruits])
 
 
 
