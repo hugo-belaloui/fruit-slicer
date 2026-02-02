@@ -96,6 +96,6 @@ while game_on: # while game_on is true as set previously the game is running
 
 
     pygame.display.flip() # update the screen
-    clock.tick(120) # avoid overloading the CPU by capping the game at 60 FPS
+    clock.tick(60) # avoid overloading the CPU by capping the game at 60 FPS
 
 pygame.quit()

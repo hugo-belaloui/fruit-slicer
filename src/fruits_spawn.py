@@ -9,7 +9,7 @@ FRUIT_NAME = ["apple", "mango", "kiwi"]
 BOMB = ["bomb"]
 FREEZE = ["ice"]
 SCALE = 0.3
-GRAVITY = 0.1
+GRAVITY = 0.2
 SPAWN_DELAY = random.randint(300, 800)  #ms
 WAVE_DELAY = 2000 #ms
 PERCENTAGE = random.randint(0, 100)
@@ -40,7 +40,7 @@ class Fruit:
             self.vx = random.uniform(3, 6) #uniform for floating numbers
         else:
             self.vx = random.uniform(-6, -3)
-        self.vy = random.uniform(-10, -5)
+        self.vy = random.uniform(-15, -10)
         self.letter = random.choice(string.ascii_uppercase) # choose an uppercase letter randomly
         self.letter_font = pygame.font.Font(None, 50) # font for the letters
         self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
