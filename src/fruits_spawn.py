@@ -64,13 +64,13 @@ class FruitSpawner:
         self.strikes = 0 # amount of strikes
 
     def check_input(self, user_input):
-        
-        for fruit in self.fruits:
+        hit_fruits = [] #list of touched fruits
+        for fruit in self.fruits[:]: # we iterate in a copy of our list
             # we compare letter with user input
             if user_input.upper() == fruit.letter.upper():
                 self.fruits.remove(fruit) # we remove the fruit, should be animated later on
-                return fruit.name 
-        return None
+                hit_fruits.append(fruit.name)
+        return hit_fruits #we return the list of all the fruits touched
     
     def activate_freeze(self, duration):
         self.freeze_end_time = pygame.time.get_ticks() + duration

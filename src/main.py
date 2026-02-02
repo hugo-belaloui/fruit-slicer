@@ -14,6 +14,7 @@ current_state = game_states.STATE_MENU
 spawner = fruits_spawn.FruitSpawner()
 lives = 3
 lives_font = pygame.font.Font(None, 40)
+score_font = pygame.font.Font(None, 40)
 
 while game_on: # while game_on is true as set previously the game is running
 
@@ -32,15 +33,23 @@ while game_on: # while game_on is true as set previously the game is running
                     current_state = game_states.STATE_MENU
                 else:
                     hit_fruit = spawner.check_input(pygame.key.name(event.key))
-                    if hit_fruit == "bomb":
-                        current_state = game_states.STATE_MENU # if we hit the bomb we go back to the menu for now 
-                        spawner.fruits = [] #reset the lists of fruits
-                    elif hit_fruit == "ice":
-                        spawner.activate_freeze(random.randint(3000,5000)) #we add random duration time to the freeze
-                    elif hit_fruit: # if we hit a fruit score increases 
-                        scoring = score.load_scores()
-                        scoring["scores"]["players"]["jhon doe"] += 1
-                        score.add_scores(scoring)
+                    if hit_fruit:
+                        if hit_fruit == "bomb":
+                            current_state = game_states.STATE_MENU # if we hit the bomb we go back to the menu for now 
+                            spawner.reset() #reset the lists of fruits
+                        else: 
+                            if "ice" in hit_fruit:
+                                spawner.activate_freeze(random.randint(3000,5000)) #we add random duration time to the freeze
+                            real_fruits_hit = [f for f in hit_fruit if f in fruits_spawn.FRUIT_NAME] #make a list of only the fruits excluding the ice and bombs
+                            count = len(real_fruits_hit)
+                            if count > 0: # if we hit a fruit score increases 
+                                points = count #one point per fruit
+                                if count >= 3: #rules for bonus ex three fruits plus two points
+                                    bonus = count - 1
+                                    points += bonus
+                                scoring = score.load_scores()
+                                scoring["scores"]["players"]["jhon doe"] += points 
+                                score.add_scores(scoring)
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 if menu.play_button.rect.collidepoint(inputs.mouse_position()):
@@ -58,7 +67,10 @@ while game_on: # while game_on is true as set previously the game is running
         spawner.update_draw(screen)
         lives = 3 - spawner.strikes # substract the amount of lives by the amount of strikes
         lives_text = lives_font.render(f"Lives: {lives}", True, (255, 255, 255))
+        current_score = score.load_scores()["scores"]["players"]["jhon doe"] # access the json to dispaly the score
+        score_text = score_font.render(f"Score: {current_score}", True, (255, 255, 255))
         screen.blit(lives_text, (10, 10))
+        screen.blit(score_text, (10, 50))
         if lives <= 0: # if no more lives quit to menu
             current_state = game_states.STATE_MENU
         # print([fruit.letter for fruit in spawner.fruits])
