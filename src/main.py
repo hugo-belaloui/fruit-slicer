@@ -12,7 +12,7 @@ game_on = True
 
 current_state = game_states.STATE_MENU
 spawner = fruits_spawn.FruitSpawner()
-
+lives = 3
 
 while game_on: # while game_on is true as set previously the game is running
 
@@ -53,7 +53,11 @@ while game_on: # while game_on is true as set previously the game is running
         screen.fill((30, 144, 255)) # fill the screen with a color as RGB
         spawner.update()
         spawner.update_draw(screen)
-        print([fruit.letter for fruit in spawner.fruits])
+        lives = 3 - spawner.strikes # substract the amount of lives by the amount of strikes
+        print(lives)
+        if lives == 0: # if no more lives quit to menu
+            current_state = game_states.STATE_MENU
+        # print([fruit.letter for fruit in spawner.fruits])
 
 
 

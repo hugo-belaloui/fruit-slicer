@@ -9,7 +9,7 @@ FRUIT_NAME = ["apple", "mango", "kiwi"]
 BOMB = ["bomb"]
 FREEZE = ["ice"]
 SCALE = 0.3
-GRAVITY = 0.4
+GRAVITY = 0.1
 SPAWN_DELAY = random.randint(300, 800)  #ms
 WAVE_DELAY = 2000 #ms
 PERCENTAGE = random.randint(0, 100)
@@ -40,7 +40,7 @@ class Fruit:
             self.vx = random.uniform(3, 6) #uniform for floating numbers
         else:
             self.vx = random.uniform(-6, -3)
-        self.vy = random.uniform(-22, -18)
+        self.vy = random.uniform(-10, -5)
         self.letter = random.choice(string.ascii_uppercase) # choose an uppercase letter randomly
         self.letter_font = pygame.font.Font(None, 50) # font for the letters
         self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
@@ -61,6 +61,7 @@ class FruitSpawner:
         self.current_wave_fruits = 0
         self.fruits_per_wave = random.randint(3, 5)
         self.freeze_end_time = 0 #variable that time of end freeze
+        self.strikes = 0 # amount of strikes
 
     def check_input(self, user_input):
         
@@ -114,3 +115,7 @@ class FruitSpawner:
             if not is_frozen: # if time isn't frozen we move the assets
                 fruit.update()
             fruit.draw(screen)
+            if fruit.y > window.HEIGHT or fruit.x > window.WIDTH: #if fruit leaves the screen 
+                self.fruits.remove(fruit) # remove the fruit from the list of fruits in the wave
+                if fruit.name in FRUIT_NAME:
+                    self.strikes += 1
