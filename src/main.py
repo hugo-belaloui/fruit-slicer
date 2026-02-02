@@ -13,6 +13,7 @@ game_on = True
 current_state = game_states.STATE_MENU
 spawner = fruits_spawn.FruitSpawner()
 lives = 3
+lives_font = pygame.font.Font(None, 40)
 
 while game_on: # while game_on is true as set previously the game is running
 
@@ -25,6 +26,7 @@ while game_on: # while game_on is true as set previously the game is running
             if current_state == game_states.STATE_MENU: # check current state
                 if event.key == pygame.K_q:
                     current_state = game_states.STATE_GAME
+                    spawner.reset()
             elif current_state == game_states.STATE_GAME:
                 if event.key == pygame.K_ESCAPE:
                     current_state = game_states.STATE_MENU
@@ -44,6 +46,7 @@ while game_on: # while game_on is true as set previously the game is running
                 if menu.play_button.rect.collidepoint(inputs.mouse_position()):
                     print(inputs.mouse_position())
                     current_state = game_states.STATE_GAME
+                    spawner.reset()
                 if menu.quit_button.rect.collidepoint(inputs.mouse_position()):
                     game_on = False
                     
@@ -54,8 +57,9 @@ while game_on: # while game_on is true as set previously the game is running
         spawner.update()
         spawner.update_draw(screen)
         lives = 3 - spawner.strikes # substract the amount of lives by the amount of strikes
-        print(lives)
-        if lives == 0: # if no more lives quit to menu
+        lives_text = lives_font.render(f"Lives: {lives}", True, (255, 255, 255))
+        screen.blit(lives_text, (10, 10))
+        if lives <= 0: # if no more lives quit to menu
             current_state = game_states.STATE_MENU
         # print([fruit.letter for fruit in spawner.fruits])
 

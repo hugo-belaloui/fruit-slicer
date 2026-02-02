@@ -75,6 +75,13 @@ class FruitSpawner:
     def activate_freeze(self, duration):
         self.freeze_end_time = pygame.time.get_ticks() + duration
 
+    #method to reset the amount of lives when it quits without quitting the program
+    def reset(self):
+        self.fruits = []
+        self.strikes = 0
+        self.current_wave_fruits = 0
+        self.last_spawn = pygame.time.get_ticks()
+
     def probability(self):
         probability = random.randint(0, 100)
         if probability in range(0, 88):
