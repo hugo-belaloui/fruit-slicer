@@ -15,6 +15,15 @@ spawner = fruits_spawn.FruitSpawner()
 lives = 3
 lives_font = pygame.font.Font(None, 40)
 score_font = pygame.font.Font(None, 40)
+menu_image = pygame.image.load("assets/main_theme.png") #load images 
+background_image = pygame.image.load("assets/background_theme.png")
+menu_image = pygame.transform.scale(menu_image, (window.WIDTH, window.HEIGHT)) #resize images
+background_image = pygame.transform.scale(background_image, (window.WIDTH, window.HEIGHT))
+# load songs
+gameplay_sound = pygame.mixer.Sound("assets/gameplay_audio.ogg")
+menu_sound = pygame.mixer.Sound("assets/menu_audio.ogg")
+
+
 
 while game_on: # while game_on is true as set previously the game is running
 
@@ -60,9 +69,18 @@ while game_on: # while game_on is true as set previously the game is running
                     game_on = False
                     
     if current_state == game_states.STATE_MENU:
+        gameplay_sound.stop()
+        if menu_sound.get_num_channels() == 0: #check if the sound is already playing 
+            menu_sound.play(-1) #play the audio as an infinite loop
+        screen.blit(menu_image, (0, 0))
         menu.draw(screen)
+    
     elif current_state == game_states.STATE_GAME:
-        screen.fill((30, 144, 255)) # fill the screen with a color as RGB
+        #screen.fill((30, 144, 255)) # fill the screen with a color as RGB
+        menu_sound.stop()
+        if gameplay_sound.get_num_channels() == 0:
+            gameplay_sound.play(-1) #play the audio as an infinite loop
+        screen.blit(background_image, (0,0))
         spawner.update()
         spawner.update_draw(screen)
         lives = 3 - spawner.strikes # substract the amount of lives by the amount of strikes
@@ -78,6 +96,6 @@ while game_on: # while game_on is true as set previously the game is running
 
 
     pygame.display.flip() # update the screen
-    clock.tick(60) # avoid overloading the CPU by capping the game at 60 FPS
+    clock.tick(120) # avoid overloading the CPU by capping the game at 60 FPS
 
 pygame.quit()

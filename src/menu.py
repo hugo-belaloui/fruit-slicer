@@ -21,19 +21,28 @@ class Button:
         self.font = pygame.font.Font(None, 40) 
         self.text_surface = self.font.render(text, True, self.text_color)
         
+        self.image = pygame.image.load("assets/play_button.png")
+        self.image = pygame.transform.scale(self.image, (width, height))
+
         # center our text in the rectangle
         self.text_rect = self.text_surface.get_rect(center=self.rect.center)
 
     def draw_button(self, screen):
-        # draw our rectangle
-        pygame.draw.rect(screen, self.current_color, self.rect, border_radius=12)
         if self.rect.collidepoint(inputs.mouse_position()):
             self.current_color = self.fill_colors['hover']
-            if pygame.mouse.get_just_pressed()[0]: # mouse get pressed [0] is for left click
+            if pygame.mouse.get_pressed()[0]: 
                 self.current_color = self.fill_colors['pressed']
         else :
             self.current_color = self.fill_colors['normal']
-        # draw our text 
+
+        shadow_rect = self.rect.copy() #copy our button
+        shadow_rect.move_ip(5, 5) # move our button in place 5 px right and down 
+        pygame.draw.rect(screen, (50, 50, 50), shadow_rect, border_radius=12)
+
+        pygame.draw.rect(screen, self.current_color, self.rect, border_radius=12)
+        
+        pygame.draw.rect(screen, self.text_color, self.rect, width=3, border_radius=12)
+
         screen.blit(self.text_surface, self.text_rect)
 
 # constants for alignment 
@@ -52,10 +61,5 @@ quit_button = Button(center_x, start_y + BUTTON_HEIGHT + GAP, BUTTON_WIDTH, BUTT
 
 
 def draw(screen):
-    screen.fill((222, 222, 222))
     play_button.draw_button(screen)
     quit_button.draw_button(screen)
-
-
-
-
