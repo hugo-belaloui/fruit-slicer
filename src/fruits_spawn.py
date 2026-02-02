@@ -16,6 +16,9 @@ PERCENTAGE = random.randint(0, 100)
 
 
 def load_fruits():
+    """
+    method for loading the fruits and link them to their images
+    """
     fruits = []
 
     for name in ASSETS:
@@ -45,6 +48,9 @@ class Fruit:
         self.letter_font = pygame.font.Font(None, 50) # font for the letters
         self.letter_text = self.letter_font.render(self.letter, True, (255,255,255) )
     def update(self) :
+        """
+        update the velocity of the fruits 
+        """
         self.x += self.vx
         self.y += self.vy
         self.vy += GRAVITY
@@ -64,6 +70,9 @@ class FruitSpawner:
         self.strikes = 0 # amount of strikes
 
     def check_input(self, user_input):
+        """
+        method that takes the inputs and check if they are linked to a displayed fruit
+        """
         hit_fruits = [] #list of touched fruits
         for fruit in self.fruits[:]: # we iterate in a copy of our list
             # we compare letter with user input

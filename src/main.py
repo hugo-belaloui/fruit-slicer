@@ -13,8 +13,8 @@ game_on = True
 current_state = game_states.STATE_MENU
 spawner = fruits_spawn.FruitSpawner()
 lives = 3
-lives_font = pygame.font.Font(None, 40)
-score_font = pygame.font.Font(None, 40)
+lives_font = pygame.font.Font("assets/Orbitron-Bold.ttf", 40)
+score_font = pygame.font.Font("assets/Orbitron-Bold.ttf", 40)
 menu_image = pygame.image.load("assets/main_theme.png") #load images 
 background_image = pygame.image.load("assets/background_theme.png")
 menu_image = pygame.transform.scale(menu_image, (window.WIDTH, window.HEIGHT)) #resize images
@@ -84,9 +84,9 @@ while game_on: # while game_on is true as set previously the game is running
         spawner.update()
         spawner.update_draw(screen)
         lives = 3 - spawner.strikes # substract the amount of lives by the amount of strikes
-        lives_text = lives_font.render(f"Lives: {lives}", True, (255, 255, 255))
+        lives_text = lives_font.render(f"Lives: {lives}", True, (0, 255, 255))
         current_score = score.load_scores()["scores"]["players"]["jhon doe"] # access the json to dispaly the score
-        score_text = score_font.render(f"Score: {current_score}", True, (255, 255, 255))
+        score_text = score_font.render(f"Score: {current_score}", True, (0, 255, 255))
         screen.blit(lives_text, (10, 10))
         screen.blit(score_text, (10, 50))
         if lives <= 0: # if no more lives quit to menu
