@@ -34,7 +34,7 @@ while game_on: # while game_on is true as set previously the game is running
                 else:
                     hit_fruit = spawner.check_input(pygame.key.name(event.key))
                     if hit_fruit:
-                        if hit_fruit == "bomb":
+                        if "bomb" in hit_fruit:
                             current_state = game_states.STATE_MENU # if we hit the bomb we go back to the menu for now 
                             spawner.reset() #reset the lists of fruits
                         else: 
